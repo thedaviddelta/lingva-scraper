@@ -1,8 +1,8 @@
 import { mapGoogleCode, LanguageType, LangCode } from "./utils/language";
 import request, { Endpoint } from "./utils/request";
 
-export const getAudio = (lang: LangCode, text: string) => {
-    const parsedLang = mapGoogleCode(LanguageType.TARGET, lang);
+export const getAudio = (lang: LangCode<"target">, text: string) => {
+    const parsedLang = mapGoogleCode(lang);
 
     const lastSpace = text.lastIndexOf(" ", 200);
     const slicedText = text.slice(0, text.length > 200 && lastSpace !== -1 ? lastSpace : 200);

@@ -120,11 +120,13 @@
     }
   },
   "mappings": {
-    "source": {},
-    "target": {
+    "request": {
       "zh": "zh-CN",
-      "zh_HANT": "zh-TW",
-      "auto": "en"
+      "zh_HANT": "zh-TW"
+    },
+    "response": {
+      "zh-CN": "zh",
+      "zh-TW": "zh"
     }
   }
 }

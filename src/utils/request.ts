@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import UserAgent from "user-agents";
-import { LangCode } from "./language";
+import { LangCodeGoogle } from "./language";
 
 export const Endpoint = {
     TRANSLATION: "translation",
@@ -14,7 +14,7 @@ type Params = {
         body: string;
     };
     audio: {
-        lang: LangCode;
+        lang: LangCodeGoogle<"target">;
         text: string;
     };
 };

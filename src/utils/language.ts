@@ -1,27 +1,47 @@
 import { languages, exceptions, mappings } from "./languages.json";
 
-const isKeyOf = <T extends object>(obj: T) => (key: keyof any): key is keyof T => key in obj;
-
 export const LanguageType = {
     SOURCE: "source",
     TARGET: "target"
 } as const;
 
-export type LangCode = keyof typeof languages;
-export type LangType = typeof LanguageType[keyof typeof LanguageType];
+type LangType = typeof LanguageType[keyof typeof LanguageType];
 
-const checkAndChangeCode = (
-    blacklists: typeof mappings | typeof exceptions,
-    langType: LangType,
-    langCode: LangCode
-): LangCode => {
-    const finalBlacklist = blacklists[langType];
-    return isKeyOf(finalBlacklist)(langCode)
-        ? finalBlacklist[langCode]
+export type LangCode<T extends LangType | void = void> =
+    T extends LangType
+        ? Exclude<keyof typeof languages, keyof typeof exceptions[T]>
+        : keyof typeof languages;
+
+export type LangCodeGoogle<T extends LangCode | LangType = LangCode> =
+    T extends LangType
+        ? Exclude<LangCode<T>, keyof typeof mappings["request"]> | keyof typeof mappings["response"]
+        : Exclude<T, keyof typeof mappings["request"]> | keyof typeof mappings["response"];
+
+const isKeyOf = <T extends object>(obj: T) => (key: keyof any): key is keyof T => key in obj;
+
+export const replaceExceptedCode = <T extends LangType>(langType: T, langCode: LangCode) => {
+    const langExceptions = exceptions[langType];
+    const finalCode = isKeyOf(langExceptions)(langCode)
+        ? langExceptions[langCode]
         : langCode;
+    return finalCode as LangCode<T>;
 };
-export const mapGoogleCode = (langType: LangType, langCode: LangCode) => checkAndChangeCode(mappings, langType, langCode);
-export const replaceExceptedCode = (langType: LangType, langCode: LangCode) => checkAndChangeCode(exceptions, langType, langCode);
+
+export const mapGoogleCode = <T extends LangCode>(langCode: T) => {
+    const reqMappings = mappings["request"];
+    const finalCode = isKeyOf(reqMappings)(langCode)
+        ? reqMappings[langCode]
+        : langCode;
+    return finalCode as LangCodeGoogle<T>;
+};
+
+export const mapLingvaCode = <T extends LangType>(langCode: LangCodeGoogle<T>) => {
+    const resMappings = mappings["response"];
+    const finalCode = isKeyOf(resMappings)(langCode)
+        ? resMappings[langCode]
+        : langCode;
+    return finalCode as LangCode<T>;
+};
 
 const filteredLanguages = (type: LangType) => {
     const entries = Object.entries(languages) as [LangCode, string][];

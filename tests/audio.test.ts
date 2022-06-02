@@ -1,10 +1,9 @@
 import { getAudio, LangCode } from "../src";
 
-const queries: [LangCode, string][] = [
+const queries: [LangCode<"target">, string][] = [
     ["es", "hola"],
     ["ca", "gerd"],
     ["en", "impression"],
-    ["auto", "impression"],
     ["zh", "早安"],
     ["zh_HANT", "早安"]
 ];
