@@ -1,6 +1,6 @@
 import { getAudio, LangCode } from "../src";
 
-const queries: [LangCode<"target">, string][] = [
+const entries: [LangCode<"target">, string][] = [
     ["es", "hola"],
     ["ca", "gerd"],
     ["en", "impression"],
@@ -9,15 +9,15 @@ const queries: [LangCode<"target">, string][] = [
 ];
 
 it("returns audio buffer correctly", async () => (
-    Promise.all(queries.map((query) => getAudio(...query)))
+    Promise.all(entries.map((entry) => getAudio(...entry)))
         .then(results => results.forEach(audio => {
             expect(audio).not.toBeNull();
             audio?.forEach(int => expect(int).toEqual(expect.any(Number)));
         }))
 ));
 
-it("returns null on wrong language", async () => (
+it("returns null on wrong params", async () => (
     // @ts-ignore
-    getAudio("wrong", "impression")
+    getAudio("", "")
         .then(audio => expect(audio).toBeNull())
 ));

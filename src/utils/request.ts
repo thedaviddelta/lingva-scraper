@@ -11,12 +11,12 @@ type EndpointType = typeof Endpoint[keyof typeof Endpoint];
 
 type Params = {
     translation: {
-        body: string;
-    };
+        body: string,
+    },
     audio: {
-        lang: LangCodeGoogle<"target">;
-        text: string;
-    };
+        lang: LangCodeGoogle<"target">,
+        text: string
+    }
 };
 
 const request = <T extends EndpointType>(

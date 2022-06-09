@@ -104,31 +104,29 @@ type InfoExtra = [
     string, // query
     [ // definitions
         [
+            string, // type
             [
-                string, // type
+                string, // definition
+                string, // example
+                true | null,
+                null,
                 [
-                    string, // definition
-                    string, // example
-                    true | null,
-                    null,
+                    [
+                        string // field
+                    ]
+                ] | null,
+                [ // synonyms
+                    [
+                        string // synonym
+                    ][],
                     [
                         [
-                            string // field
+                            string // type
                         ]
-                    ] | null,
-                    [ // synonyms
-                        [
-                            string // synonym
-                        ][],
-                        [
-                            [
-                                string // type
-                            ]
-                        ] | null
-                    ][]
-                ][]
+                    ] | undefined
+                ][] | undefined
             ][]
-        ],
+        ][],
         number,
         true | undefined
     ] | null,
@@ -151,12 +149,12 @@ type InfoExtra = [
             string, // type
             [
                 string, // word,
-                string, // article
-                string[], // synonyms
+                string | null, // article
+                string[], // meanings
                 number, // frequency
                 true
             ][],
-            string, // target
+            LangCodeGoogle<"target">, // target
             LangCodeGoogle<"source"> // source/detected
         ][]
     ] | null,

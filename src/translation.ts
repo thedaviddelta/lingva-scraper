@@ -1,15 +1,14 @@
-import { mapGoogleCode, mapLingvaCode, LangCode } from "./utils/language";
+import { mapGoogleCode, LangCode } from "./utils/language";
 import request, { Endpoint } from "./utils/request";
+import * as parse from "./utils/parse";
 import { Boilerplate, Info } from "./utils/types";
+import { Translation } from "./utils/interfaces";
 
-const parseTranslation = {
-    detected: ([source, target, detected, extra]: Info) => {
-        const code = detected ?? source?.[2] ?? target?.[3] ?? extra?.[8] ?? extra?.[5]?.[0]?.[0]?.[3];
-        return code ? mapLingvaCode<"source">(code) : undefined;
-    }
-};
-
-export const getTranslation = (source: LangCode<"source">, target: LangCode<"target">, query: string) => {
+export const getTranslation = (
+    source: LangCode<"source">,
+    target: LangCode<"target">,
+    query: string
+): Promise<Translation | null> => {
     const parsedSource = mapGoogleCode(source);
     const parsedTarget = mapGoogleCode(target);
 
@@ -23,14 +22,23 @@ export const getTranslation = (source: LangCode<"source">, target: LangCode<"tar
             const boilerplate: Boilerplate = JSON.parse(data?.split("\n")?.[3]);
             const info: Info = JSON.parse(boilerplate?.[0]?.[2]);
             if (!info)
-                return null;
-            const [infoSource, infoTarget, _, infoExtra] = info;
+                return;
 
-            const queryPronunciation = infoSource?.[0];
-            const detected = parseTranslation.detected(info);
-            const translation = infoTarget?.[0]?.[0]?.[5]?.[0]?.[0];
-            const translationPronunciation = infoTarget?.[0]?.[0]?.[1];
+            const translation = parse.translation(info);
+            if (!translation)
+                return;
 
-            return { queryPronunciation, detected, translation, translationPronunciation };
+            return parse.undefinedFields({
+                translation,
+                detectedSource: parse.detected(info),
+                pronunciation: {
+                    query: parse.pronunciation.query(info),
+                    translation: parse.pronunciation.translation(info)
+                },
+                definitions: parse.list.definitions(info),
+                examples: parse.list.examples(info),
+                similar: parse.list.similar(info),
+                extraTranslations: parse.list.translations(info),
+            });
         });
 };

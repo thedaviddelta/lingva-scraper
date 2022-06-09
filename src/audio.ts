@@ -1,4 +1,4 @@
-import { mapGoogleCode, LanguageType, LangCode } from "./utils/language";
+import { mapGoogleCode, LangCode } from "./utils/language";
 import request, { Endpoint } from "./utils/request";
 
 export const getAudio = (lang: LangCode<"target">, text: string) => {
