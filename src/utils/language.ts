@@ -19,6 +19,12 @@ export type LangCodeGoogle<T extends LangCode | LangType = LangCode> =
 
 const isKeyOf = <T extends object>(obj: T) => (key: keyof any): key is keyof T => key in obj;
 
+/**
+ * Changes invalid languages for a certain language type with the proper replacement
+ * @param langType - The type of language to check on
+ * @param langCode - A *Lingva* language code
+ * @returns A proper *Lingva* code for that language type
+ */
 export const replaceExceptedCode = <T extends LangType>(langType: T, langCode: LangCode) => {
     const langExceptions = exceptions[langType];
     const finalCode = isKeyOf(langExceptions)(langCode)
@@ -27,6 +33,11 @@ export const replaceExceptedCode = <T extends LangType>(langType: T, langCode: L
     return finalCode as LangCode<T>;
 };
 
+/**
+ * Maps a *Lingva* language code to a *Google* one
+ * @param langCode - A *Lingva* language code
+ * @returns The proper *Google* code for that language
+ */
 export const mapGoogleCode = <T extends LangCode>(langCode: T) => {
     const reqMappings = mappings["request"];
     const finalCode = isKeyOf(reqMappings)(langCode)
@@ -35,6 +46,11 @@ export const mapGoogleCode = <T extends LangCode>(langCode: T) => {
     return finalCode as LangCodeGoogle<T>;
 };
 
+/**
+ * Maps a *Google* language code to a *Lingva* one
+ * @param langCode - A *Google* language code
+ * @returns The proper *Lingva* code for that language
+ */
 export const mapLingvaCode = <T extends LangType>(langCode: LangCodeGoogle<T>) => {
     const resMappings = mappings["response"];
     const finalCode = isKeyOf(resMappings)(langCode)

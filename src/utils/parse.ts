@@ -1,27 +1,27 @@
-import { Info } from "./types";
+import { Data } from "./types";
 import { mapLingvaCode } from "./language";
-import { Translation } from "./interfaces";
+import { TranslationInfo } from "./interfaces";
 
-export const detected = ([source, target, detected, extra]: Info): Translation["detectedSource"] => {
+export const detected = ([source, target, detected, extra]: Data): TranslationInfo["detectedSource"] => {
     const code = detected ?? source?.[2] ?? target?.[3] ?? extra?.[8] ?? extra?.[5]?.[0]?.[0]?.[3];
     return code ? mapLingvaCode<"source">(code) : undefined;
 };
 
-export const translation = ([, target]: Info): Translation["translation"] | undefined => (
+export const translation = ([, target]: Data): TranslationInfo["translation"] | undefined => (
     target?.[0]?.[0]?.[5]?.[0]?.[0] ?? target?.[0]?.[0]?.[5]?.[0]?.[4]?.[0]?.[0]
 );
 
 export const pronunciation = {
-    query: ([source]: Info): Translation["pronunciation"]["query"] => (
+    query: ([source]: Data): TranslationInfo["pronunciation"]["query"] => (
         source?.[0] ?? undefined
     ),
-    translation: ([, target]: Info): Translation["pronunciation"]["translation"] => (
+    translation: ([, target]: Data): TranslationInfo["pronunciation"]["translation"] => (
         target?.[0]?.[0]?.[1] ?? undefined
     )
 };
 
 export const list = {
-    definitions: ({ 3: extra }: Info): Translation["definitions"] => (
+    definitions: ({ 3: extra }: Data): TranslationInfo["definitions"] => (
         extra?.[1]?.[0]?.map(([type, defList]) => ({
             type,
             list: defList?.map(({ 0: definition, 1: example, 4: fieldWrapper, 5: synList }) => ({
@@ -34,13 +34,13 @@ export const list = {
             })) ?? []
         })) ?? []
     ),
-    examples: ({ 3: extra }: Info): Translation["examples"] => (
+    examples: ({ 3: extra }: Data): TranslationInfo["examples"] => (
         extra?.[2]?.[0]?.map(([, item]) => item) ?? []
     ),
-    similar: ({ 3: extra }: Info): Translation["similar"] => (
+    similar: ({ 3: extra }: Data): TranslationInfo["similar"] => (
         extra?.[3]?.[0] ?? []
     ),
-    translations: ({ 3: extra }: Info): Translation["extraTranslations"] => (
+    translations: ({ 3: extra }: Data): TranslationInfo["extraTranslations"] => (
         extra?.[5]?.[0]?.map(([type, transList]) => ({
             type,
             list: transList?.map(([word, article, meanings, frequency]) => ({

@@ -3,19 +3,27 @@ import UserAgent from "user-agents";
 import { LangCodeGoogle } from "./language";
 
 export const Endpoint = {
-    TRANSLATION: "translation",
+    INFO: "info",
+    SIMPLE: "simple",
     AUDIO: "audio"
 } as const;
 
 type EndpointType = typeof Endpoint[keyof typeof Endpoint];
 
 type Params = {
-    translation: {
-        body: string,
+    [Endpoint.INFO]: {
+        body: string
     },
-    audio: {
+    [Endpoint.SIMPLE]: {
+        source: LangCodeGoogle<"source">,
+        target: LangCodeGoogle<"target">,
+        query: string
+    },
+    [Endpoint.AUDIO]: {
         lang: LangCodeGoogle<"target">,
-        text: string
+        text: string,
+        textLength: number,
+        speed: number
     }
 };
 
@@ -26,9 +34,7 @@ const request = <T extends EndpointType>(
     with: (
         params: Params[T]
     ) => {
-        const promise = endpoint === "translation"
-            ? fetchTranslation(params as Params["translation"])
-            : fetchAudio(params as Params["audio"]);
+        const promise = retrieve(endpoint, params);
         return {
             promise,
             doing: <V>(
@@ -50,29 +56,47 @@ const isEmpty = (item: any) => (
     !item || (typeof item === "object" && "length" in item && item.length <= 0)
 );
 
-const fetchTranslation = ({ body }: Params["translation"]) => (
-    axios.post(
-        "https://translate.google.com/_/TranslateWebserverUi/data/batchexecute?rpcids=MkEWBc&rt=c",
-        body,
-        {
-            headers: {
-                "User-Agent": new UserAgent().toString(),
-                "Content-Type": "application/x-www-form-urlencoded"
+const retrieve = <T extends EndpointType>(endpoint: T, params: Params[T]) => {
+    if (endpoint === Endpoint.INFO) {
+        const { body } = params as Params[typeof Endpoint.INFO];
+        return axios.post(
+            "https://translate.google.com/_/TranslateWebserverUi/data/batchexecute?rpcids=MkEWBc&rt=c",
+            body,
+            {
+                headers: {
+                    "User-Agent": new UserAgent().toString(),
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
             }
-        }
-    )
-);
+        );
+    }
 
-const fetchAudio = ({ lang, text }: Params["audio"]) => (
-    axios.get(
-        `https://translate.google.com/translate_tts?tl=${lang}&q=${encodeURIComponent(text)}&textlen=${text.length}&client=tw-ob`,
-        {
-            responseType: "arraybuffer",
-            headers: {
-                "User-Agent": new UserAgent().toString()
+    if (endpoint === Endpoint.SIMPLE) {
+        const { source, target, query } = params as Params[typeof Endpoint.SIMPLE];
+        return axios.get(
+            `https://translate.google.com/m?sl=${source}&tl=${target}&q=${query}`,
+            {
+                headers: {
+                    "User-Agent": new UserAgent().toString()
+                }
             }
-        }
-    )
-);
+        );
+    }
+
+    if (endpoint === Endpoint.AUDIO) {
+        const { lang, text, textLength, speed } = params as Params[typeof Endpoint.AUDIO];
+        return axios.get(
+            `https://translate.google.com/translate_tts?tl=${lang}&q=${text}&textlen=${textLength}&speed=${speed}&client=tw-ob`,
+            {
+                responseType: "arraybuffer",
+                headers: {
+                    "User-Agent": new UserAgent().toString()
+                }
+            }
+        );
+    }
+
+    throw new Error("Invalid endpoint");
+};
 
 export default request;

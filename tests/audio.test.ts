@@ -1,23 +1,26 @@
 import { getAudio, LangCode } from "../src";
+// @ts-ignore
+import { expectFromEntries, expectFromWrong, sampleText } from "./testUtils";
 
-const entries: [LangCode<"target">, string][] = [
+type Entry = [LangCode<"target">, string];
+
+const entries: Entry[] = [
     ["es", "hola"],
     ["ca", "gerd"],
     ["en", "impression"],
     ["zh", "早安"],
-    ["zh_HANT", "早安"]
+    ["zh_HANT", "早安"],
+    ["ca", sampleText.large],
+    ["ca", sampleText.huge]
 ];
 
-it("returns audio buffer correctly", async () => (
-    Promise.all(entries.map((entry) => getAudio(...entry)))
-        .then(results => results.forEach(audio => {
-            expect(audio).not.toBeNull();
-            audio?.forEach(int => expect(int).toEqual(expect.any(Number)));
-        }))
+it("returns audio buffer correctly", () => (
+    expectFromEntries(entries, getAudio, audio => {
+        expect(audio).not.toBeNull();
+        audio?.forEach(int => expect(int).toEqual(expect.any(Number)));
+    })
 ));
 
-it("returns null on wrong params", async () => (
-    // @ts-ignore
-    getAudio("", "")
-        .then(audio => expect(audio).toBeNull())
+it("returns null on wrong params", () => (
+    expectFromWrong(getAudio)
 ));

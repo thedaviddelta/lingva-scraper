@@ -20,13 +20,13 @@ interface ExtraTranslationsGroup {
     }[]
 }
 
-export interface Translation {
+export interface TranslationInfo {
     translation: string,
     detectedSource?: LangCode<"source">,
     pronunciation: {
         query?: string,
         translation?: string
-    }
+    },
     definitions: DefinitionsGroup[],
     examples: string[],
     similar: string[],

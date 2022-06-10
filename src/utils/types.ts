@@ -4,7 +4,7 @@ export type Boilerplate = [
     [
         "wrb.fr",
         "MkEWBc",
-        string, // info
+        string, // data
         null,
         null,
         null,
@@ -22,14 +22,14 @@ export type Boilerplate = [
     ]
 ];
 
-export type Info = [
-    InfoSource,
-    InfoTarget,
+export type Data = [
+    DataSource,
+    DataTarget,
     LangCodeGoogle<"source">, // source/detected
-    InfoExtra | undefined
+    DataExtra | undefined
 ];
 
-type InfoSource = [
+type DataSource = [
     string | null, // pronunciation
     [
         null,
@@ -67,7 +67,7 @@ type InfoSource = [
     ]
 ];
 
-type InfoTarget = [ // target
+type DataTarget = [ // target
     [
         [
             null,
@@ -100,7 +100,7 @@ type InfoTarget = [ // target
     ]
 ];
 
-type InfoExtra = [
+type DataExtra = [
     string, // query
     [ // definitions
         [
