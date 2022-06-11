@@ -32,10 +32,21 @@ export type Data = [
 type DataSource = [
     string | null, // pronunciation
     [
-        null,
+        [
+            [
+                null,
+                string
+            ],
+            string, // text
+            1,
+            [
+                1
+            ],
+            string // typo
+        ] | null,
         [
             LangCodeGoogle<"source"> // lang
-        ]
+        ] | null
     ] | null,
     LangCodeGoogle<"source"> | null, // detected
     [

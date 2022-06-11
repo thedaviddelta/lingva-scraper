@@ -10,6 +10,7 @@ const entries: Entry[] = [
     ["en", "impression"],
     ["zh", "早安"],
     ["zh_HANT", "早安"],
+    ["en", "poato"],
     ["ca", sampleText.large],
     ["ca", sampleText.huge]
 ];
