@@ -20,6 +20,16 @@ export type LangCodeGoogle<T extends LangCode | LangType = LangCode> =
 const isKeyOf = <T extends object>(obj: T) => (key: keyof any): key is keyof T => key in obj;
 
 /**
+ * Checks if the given code is a valid language code and infers its type correctly
+ * @param code - The hypothetical code to check
+ * @param [langType] - The type of language to check on
+ * @returns A boolean showing whether the code is valid or not
+ */
+export const isValidCode = <T extends LangType>(code: string | null | undefined, langType?: T): code is LangCode<T> => (
+    !!code && isKeyOf(languageList[langType ?? "all"])(code)
+);
+
+/**
  * Changes invalid languages for a certain language type with the proper replacement
  * @param langType - The type of language to check on
  * @param langCode - A *Lingva* language code

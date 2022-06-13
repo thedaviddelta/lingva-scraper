@@ -37,7 +37,9 @@ export const getTranslationInfo = async (
 
             return parse.undefinedFields({
                 translation,
-                detectedSource: parse.detected(resData),
+                detectedSource: source === "auto"
+                    ? parse.detected(resData)
+                    : undefined,
                 typo: parse.typo(resData),
                 pronunciation: {
                     query: parse.pronunciation.query(resData),
