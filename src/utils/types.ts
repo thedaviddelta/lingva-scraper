@@ -87,17 +87,15 @@ type DataTarget = [ // target
             null,
             null,
             [
-                [
-                    string, // text
-                    null,
-                    null,
-                    null,
-                    [ // more
-                        string,
-                        number[]
-                    ][]
-                ]
-            ]
+                string, // text
+                null,
+                null,
+                null,
+                [ // more
+                    string,
+                    number[]
+                ][]
+            ][]
         ]
     ],
     LangCodeGoogle<"target">, // lang

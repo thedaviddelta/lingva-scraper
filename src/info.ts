@@ -5,7 +5,7 @@ import { Boilerplate, Data } from "./utils/types";
 import { TranslationInfo } from "./utils/interfaces";
 
 /**
- * Retrieves the full translation information, including the translated text and, optionally, other relevant data
+ * Retrieves the full translation information given a pair of languages and a query
  * @param source - The code of the language to translate from
  * @param target - The code of the language to translate to
  * @param query - The text to be translated
@@ -31,12 +31,7 @@ export const getTranslationInfo = async (
             if (!resData)
                 return;
 
-            const translation = parse.translation(resData);
-            if (!translation)
-                return;
-
             return parse.undefinedFields({
-                translation,
                 detectedSource: source === "auto"
                     ? parse.detected(resData)
                     : undefined,

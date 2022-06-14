@@ -7,10 +7,6 @@ export const detected = ([source, target, detected, extra]: Data): TranslationIn
     return code ? mapLingvaCode<"source">(code) : undefined;
 };
 
-export const translation = ([, target]: Data): TranslationInfo["translation"] | undefined => (
-    target?.[0]?.[0]?.[5]?.[0]?.[0] ?? target?.[0]?.[0]?.[5]?.[0]?.[4]?.[0]?.[0]
-);
-
 export const typo = ([source]: Data): TranslationInfo["typo"] => (
     source?.[1]?.[0]?.[4] ?? undefined
 );

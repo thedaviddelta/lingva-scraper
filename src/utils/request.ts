@@ -4,7 +4,7 @@ import { LangCodeGoogle } from "./language";
 
 export const Endpoint = {
     INFO: "info",
-    SIMPLE: "simple",
+    TEXT: "text",
     AUDIO: "audio"
 } as const;
 
@@ -14,7 +14,7 @@ type Params = {
     [Endpoint.INFO]: {
         body: string
     },
-    [Endpoint.SIMPLE]: {
+    [Endpoint.TEXT]: {
         source: LangCodeGoogle<"source">,
         target: LangCodeGoogle<"target">,
         query: string
@@ -71,8 +71,8 @@ const retrieve = <T extends EndpointType>(endpoint: T, params: Params[T]) => {
         );
     }
 
-    if (endpoint === Endpoint.SIMPLE) {
-        const { source, target, query } = params as Params[typeof Endpoint.SIMPLE];
+    if (endpoint === Endpoint.TEXT) {
+        const { source, target, query } = params as Params[typeof Endpoint.TEXT];
         return axios.get(
             `https://translate.google.com/m?sl=${source}&tl=${target}&q=${query}`,
             {

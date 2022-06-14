@@ -21,7 +21,6 @@ interface ExtraTranslationsGroup {
 }
 
 export interface TranslationInfo {
-    translation: string,
     detectedSource?: LangCode<"source">,
     typo?: string,
     pronunciation: {

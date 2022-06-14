@@ -1,4 +1,4 @@
-import { getSimpleTranslation, LangCode } from "../src";
+import { getTranslationText, LangCode } from "../src";
 // @ts-ignore
 import { expectFromEntries, expectFromWrong, sampleText } from "./testUtils";
 
@@ -15,16 +15,16 @@ const entries: Entry[] = [
 ];
 
 it("returns translated text correctly", () => (
-    expectFromEntries(entries, getSimpleTranslation, trans => {
+    expectFromEntries(entries, getTranslationText, trans => {
         expect(trans).not.toBeNull();
     })
 ));
 
 it("returns null on wrong params", () => (
-    expectFromWrong(getSimpleTranslation)
+    expectFromWrong(getTranslationText)
 ));
 
 it("returns null on huge text", () => (
-    getSimpleTranslation("ca", "es", sampleText.huge)
+    getTranslationText("ca", "es", sampleText.huge)
         .then(trans => expect(trans).toBeNull())
 ));
