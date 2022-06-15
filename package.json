@@ -1,6 +1,6 @@
 {
   "name": "lingva-scraper",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "Google Translate scraper for Lingva Translate",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,7 +30,8 @@
     "extractor"
   ],
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "img/logo.svg"
   ],
   "dependencies": {
     "axios": "^0.27.2",
