@@ -8,7 +8,7 @@
         <a href="https://npmjs.com/package/lingva-scraper">
             <img alt="NPM Version" src="https://img.shields.io/npm/v/lingva-scraper">
         </a>
-        <img alt="Commits since latest release" src="https://img.shields.io/github/commits-since/thedaviddelta/lingva-scraper/v1.0.0?color=20B2AA">
+        <img alt="Commits since latest release" src="https://img.shields.io/github/commits-since/thedaviddelta/lingva-scraper/v1.1.0?color=20B2AA">
         <a href="./LICENSE">
             <img src="https://img.shields.io/github/license/thedaviddelta/lingva-scraper" alt="License">
         </a>
