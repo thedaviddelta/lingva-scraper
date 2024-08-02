@@ -57,6 +57,7 @@
     "it": "Italian",
     "ja": "Japanese",
     "jw": "Javanese",
+    "kab": "Kabyle",
     "kn": "Kannada",
     "kk": "Kazakh",
     "km": "Khmer",
@@ -137,7 +138,8 @@
   },
   "exceptions": {
     "source": {
-      "zh_HANT": "zh"
+      "zh_HANT": "zh",
+      "ber-Latn": "kab"
     },
     "target": {
       "auto": "en"
@@ -146,11 +148,13 @@
   "mappings": {
     "request": {
       "zh": "zh-CN",
-      "zh_HANT": "zh-TW"
+      "zh_HANT": "zh-TW",
+      "ber-Latn": "kab"
     },
     "response": {
       "zh-CN": "zh",
-      "zh-TW": "zh"
+      "zh-TW": "zh",
+      "ber-Latn": "kab"
     }
   }
 }
